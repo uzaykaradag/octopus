@@ -59,67 +59,71 @@ def plot_results(edge_trace, true_edge, test_img, grad_img, credint=None, string
     return fig
 
 
-def display_scan(scan, predictions, true_elm_coords=None, credible_intervals=None, figsize=(15, 10), dpi=100):
+def display_scan(scan, predictions, gt_elm=None, credible_intervals=None, figsize=(10, 10)):
     """
-    A function to plot ELM predictions and true coordinates on an OCT scan.
+    Display the ELM coordinates overlaid on the OCT scan using scatter plots.
 
     Parameters:
-    - scan: 2D numpy array of the OCT scan
+    - scan: 2D numpy array representing the OCT scan
     - predictions: dict where keys are model names and values are numpy arrays of shape (N, 2)
-    - true_elm_coords: numpy array of shape (N, 2) for true ELM coordinates (optional)
+    - gt_elm: numpy array of shape (N, 2) for ground-truth ELM coordinates (optional)
     - credible_intervals: dict with same keys as predictions, values are tuples of lower and upper bounds (optional)
-    - figsize: tuple, size of the figure
-    - dpi: int, resolution of the figure
-
-    Returns:
-    - fig: matplotlib figure object
+    - figsize: tuple, size of the figure (width, height) in inches
     """
-    fig, ax = plt.subplots(figsize=figsize, dpi=dpi)
 
-    # Display the OCT scan
-    ax.imshow(scan, cmap='gray', aspect='auto')
-    ax.set_title('ELM Predictions', fontsize=16)
+    fig = plt.figure(figsize=figsize)
+
+    # Display the scan
+    plt.imshow(scan, cmap='gray')
 
     # Color cycle for different predictions
     colors = plt.cm.rainbow(np.linspace(0, 1, len(predictions)))
     legend_elements = []
 
     # Plot true ELM if provided
-    if true_elm_coords is not None:
-        ax.plot(true_elm_coords[:, 1], true_elm_coords[:, 0], color='green', linewidth=2, linestyle='--')
-        legend_elements.append(Line2D([0], [0], color='green', lw=2, linestyle='--', label='True ELM'))
+    if gt_elm is not None:
+        plt.scatter(gt_elm[:, 1], gt_elm[:, 0], color='green', s=1, alpha=0.5, label='True ELM')
+        legend_elements.append(
+            Line2D([0], [0], color='green', marker='o', linestyle='', markersize=5, label='True ELM'))
 
     # Plot predictions and calculate metrics
     for (model_name, elm_coords), color in zip(predictions.items(), colors):
-        ax.plot(elm_coords[:, 1], elm_coords[:, 0], color=color, linewidth=2)
+        plt.scatter(elm_coords[:, 1], elm_coords[:, 0], color=color, s=1, alpha=0.5, label=model_name)
 
-        if true_elm_coords is not None:
-            dice_coef = calculate_dice(elm_coords, true_elm_coords, image_shape=scan.shape)
-            iou_score = calculate_iou(elm_coords, true_elm_coords, image_shape=scan.shape)
+        if gt_elm is not None:
+            dice_coef = calculate_dice(elm_coords, gt_elm, image_shape=scan.shape)
+            iou_score = calculate_iou(elm_coords, gt_elm, image_shape=scan.shape)
             label = f'{model_name} (DICE: {dice_coef:.4f}, IoU: {iou_score:.4f})'
         else:
             label = model_name
 
-        legend_elements.append(Line2D([0], [0], color=color, lw=2, label=label))
+        legend_elements.append(Line2D([0], [0], color=color, marker='o', linestyle='', markersize=5, label=label))
 
         # Plot credible intervals if provided
         if credible_intervals and model_name in credible_intervals:
             lower, upper = credible_intervals[model_name]
-            ax.fill_between(np.arange(len(lower)), lower, upper, color=color, alpha=0.2)
+            plt.fill_between(np.arange(len(lower)), lower, upper, color=color, alpha=0.2)
+
+    # Set title
+    if gt_elm is not None:
+        plt.title('OCT Scan with ELM Coordinates (Comparison)', fontsize=16)
+    else:
+        plt.title('OCT Scan with ELM Coordinates', fontsize=16)
 
     # Customize the plot
-    ax.legend(handles=legend_elements, loc='best', fontsize=10)
+    plt.legend(handles=legend_elements, loc='best', fontsize=10)
 
     # Remove ticks for a cleaner look
-    ax.set_xticks([])
-    ax.set_yticks([])
+    plt.xticks([])
+    plt.yticks([])
 
     plt.tight_layout()
-    plt.show()
+    return fig
 
 
 def plot_elm(scan, elm_coords, figsize=(10, 10), compare=False, true_elm_coords=None):
     """
+    !DEPRECATED
     Display the ELM coordinates overlaid on the OCT scan.
 
     Parameters:
@@ -129,6 +133,8 @@ def plot_elm(scan, elm_coords, figsize=(10, 10), compare=False, true_elm_coords=
     - compare: boolean, if True, compare predicted ELM coordinates with true ELM coordinates
     - true_elm_coords: numpy array of shape (N, 2) representing the true ELM coordinates (required if compare is True)
     """
+
+    print('This function is deprecated use: octopus.plotting.display_scan instead')
 
     plt.figure(figsize=figsize)
 

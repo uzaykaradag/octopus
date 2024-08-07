@@ -1,6 +1,7 @@
-numpy
-scipy
-scikit-learn
-matplotlib
+numpy~=1.26.1
+scipy~=1.11.3
+scikit-learn~=1.4.1.post1
+matplotlib~=3.8.0
 opencv-python
-scikit-image
+scikit-image~=0.23.2
+KDEpy~=1.1.9
