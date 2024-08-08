@@ -1,3 +1,3 @@
-from .image_processing import compute_grad_image, kernel_builder
+from .image_processing import kernel_builder, compute_grad_image
 
-__all__ = ['compute_grad_image', 'kernel_builder']
+__all__ = ['kernel_builder', 'compute_grad_image']

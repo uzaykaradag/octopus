@@ -24,7 +24,7 @@ def get_file_list():
     if not os.path.exists(SCAN_DIRECTORY):
         raise FileNotFoundError(f"Directory not found: {SCAN_DIRECTORY}")
 
-    files = [f for f in os.listdir(SCAN_DIRECTORY) if f.endswith(('.png', '.jpg', '.tif'))]
+    files = [f for f in os.listdir(SCAN_DIRECTORY) if f.endswith(('.png'))]
 
     if not files:
         raise ValueError(f"No image files found in {SCAN_DIRECTORY}")
@@ -34,22 +34,24 @@ def get_file_list():
 
 def load_dataset():
     files = get_file_list()
-    scans = []
-    pred_elm_coords_list = []
-    gt_elm_coords_list = []
+    scans = dict()
+    inits = dict()
+    gts = dict()
 
     for file in files:
         scan_path = os.path.join(SCAN_DIRECTORY, file)
         pred_mask_path = os.path.join(PRED_DIRECTORY, file)
         gt_mask_path = os.path.join(GT_DIRECTORY, file)
 
+        key = file.replace('.png', '')
+
         scan = preprocess_scan(scan_path)
-        scans.append(scan)
+        scans[key] = scan
 
-        pred_elm_coords = extract_elm_coords(pred_mask_path)
-        pred_elm_coords_list.append(pred_elm_coords)
+        init_elm = extract_elm_coords(pred_mask_path)
+        inits[key] = init_elm
 
-        gt_elm_coords = extract_elm_coords(gt_mask_path)
-        gt_elm_coords_list.append(gt_elm_coords)
+        gt_elm = extract_elm_coords(gt_mask_path)
+        gts[key] = gt_elm
 
-    return scans, pred_elm_coords_list, gt_elm_coords_list
+    return scans, inits, gts

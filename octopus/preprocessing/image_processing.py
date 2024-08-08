@@ -58,6 +58,34 @@ def kernel_builder(size, b2d=False, normalize=False, vertical_edges=False, unit=
 
     return kernel
 
+def compute_grad_image(img, kernel_size=[11, 5], norm=True, astyp=np.float32):
+    """
+    Computes the gradient image using user-defined kernels to measure the horizontal and vertical gradients in both the
+    bright-to-dark and dark-to-bright transitions.
+
+    INPUTS:
+    -----------------
+        img (2darray) : Input image.
+
+        kernel_size (2darray) : Size of kernel.
+
+        norm (bool, default True) : If flagged, image gradient is normalised to (0,1).
+
+        astyp (data-type, default np.float32) : Which type to set image data as
+    """
+
+    kernel = kernel_builder(kernel_size)
+
+    # Compute gradient image
+    grad_img = convolve(img, kernel, mode='nearest')
+    grad_img[np.where(grad_img < 0)] = 0
+    if normalise:
+        output = normalise(grad_img, minmax_val=(0, 1), astyp=astyp)
+    else:
+        output = grad_img.astype(int)
+
+    return output
+
 
 def normalise(img, minmax_val=(0, 1), astyp=np.float32):
     """
@@ -88,31 +116,7 @@ def normalise(img, minmax_val=(0, 1), astyp=np.float32):
     return img.astype(astyp)
 
 
-def compute_grad_image(img, kernel, norm=True, astyp=np.float32):
-    """
-    Computes the gradient image using user-defined kernels to measure the horizontal and vertical gradients in both the
-    bright-to-dark and dark-to-bright transitions.
 
-    INPUTS:
-    -----------------
-        img (2darray) : Input image.
-
-        kernel (2darray) : Discrete derivative filter to convolve image with.
-
-        norm (bool, default True) : If flagged, image gradient is normalised to (0,1).
-
-        astyp (data-type, default np.float32) : Which type to set image data as
-    """
-
-    # Compute gradient image
-    grad_img = convolve(img, kernel, mode='nearest')
-    grad_img[np.where(grad_img < 0)] = 0
-    if normalise:
-        output = normalise(grad_img, minmax_val=(0, 1), astyp=astyp)
-    else:
-        output = grad_img.astype(int)
-
-    return output
 
 
 def denoise(image, technique, kwargs, plot=False, verbose=False):
