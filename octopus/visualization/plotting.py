@@ -72,6 +72,7 @@ def display_scan(scan, predictions, gt_elm=None, credible_intervals=None, figsiz
     """
 
     fig = plt.figure(figsize=figsize)
+    plt.suptitle("")
 
     # Display the scan
     plt.imshow(scan, cmap='gray')
@@ -103,12 +104,6 @@ def display_scan(scan, predictions, gt_elm=None, credible_intervals=None, figsiz
         if credible_intervals and model_name in credible_intervals:
             lower, upper = credible_intervals[model_name]
             plt.fill_between(np.arange(len(lower)), lower, upper, color=color, alpha=0.2)
-
-    # Set title
-    if gt_elm is not None:
-        plt.title('OCT Scan with ELM Coordinates (Comparison)', fontsize=16)
-    else:
-        plt.title('OCT Scan with ELM Coordinates', fontsize=16)
 
     # Customize the plot
     plt.legend(handles=legend_elements, loc='best', fontsize=10)
