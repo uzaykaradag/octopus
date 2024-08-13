@@ -57,7 +57,7 @@ def filter_discontinuities(coords, jump_indices, sorted_coords, buffer=1):
     return filtered_coords
 
 
-def trace_elm(edge_map, initial_elm, kernel_options=None, num_runs=3, subset_size=100, discontinuity_threshold=50,
+def trace_elm(edge_map, initial_elm, kernel_options=None, num_runs=100, subset_size=100, discontinuity_threshold=25,
                  buffer=1):
     """Trace the External Limiting Membrane (ELM) using Gaussian Process Edge Tracing."""
     if kernel_options is None:

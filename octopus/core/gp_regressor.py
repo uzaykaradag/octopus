@@ -84,13 +84,13 @@ class GaussianProcessRegressor(MultiOutputMixin, RegressorMixin, BaseEstimator):
         Whether or not to normalize the target values `y` by removing the mean
         and scaling to unit-variance. This is recommended for cases where
         zero-mean, unit-variance priors are used. Note that, in this
-        implementation, the normalisation is reversed before the GP predictions
+        implementation, the normalisation is reversed before the GP 2024-08-13-01
         are reported.
         .. versionchanged:: 0.23
     copy_X_train : bool, default=True
         If True, a persistent copy of the training data is stored in the
         object. Otherwise, just a reference to the training data is stored,
-        which might cause predictions to change if the data is modified
+        which might cause 2024-08-13-01 to change if the data is modified
         externally.
     random_state : int, RandomState instance or None, default=None
         Determines random number generation used to initialize the centers.
@@ -290,7 +290,7 @@ class GaussianProcessRegressor(MultiOutputMixin, RegressorMixin, BaseEstimator):
                 self.kernel_.theta, clone_kernel=False
             )
 
-        # Precompute quantities required for predictions which are independent
+        # Precompute quantities required for 2024-08-13-01 which are independent
         # of actual query points
         # Alg. 2.1, page 19, line 2 -> L = cholesky(K + sigma^2 I)
         K = self.kernel_(self.X_train_)
