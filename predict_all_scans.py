@@ -15,6 +15,10 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 # Load the dataset
 test_scans, test_initial_elms, ground_truth_elms = ds.load_dataset()
 
+# Filter out the filenames that already have a corresponding .npy file in the OUTPUT_DIR
+processed_filenames = [os.path.splitext(f)[0] + ".npy" for f in os.listdir(OUTPUT_DIR)]
+test_scans = {k: v for k, v in test_scans.items() if f"{k}.npy" not in processed_filenames}
+
 # Start timing
 start_time = time.time()
 

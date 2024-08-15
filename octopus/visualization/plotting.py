@@ -38,8 +38,8 @@ def display_scan(scan, predictions, gt_elm=None, credible_intervals=None, figsiz
         plt.scatter(elm_coords[:, 1], elm_coords[:, 0], color=color, s=1, alpha=0.5, label=model_name)
 
         if gt_elm is not None:
-            dice_coef = calculate_dice(elm_coords, gt_elm, image_shape=scan.shape)
-            iou_score = calculate_iou(elm_coords, gt_elm, image_shape=scan.shape)
+            dice_coef = calculate_dice2(elm_coords, gt_elm, image_shape=scan.shape)
+            iou_score = calculate_iou2(elm_coords, gt_elm, image_shape=scan.shape)
             label = f'{model_name} (DICE: {dice_coef:.4f}, IoU: {iou_score:.4f})'
         else:
             label = model_name

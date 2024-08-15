@@ -155,66 +155,66 @@ def get_metrics_df(preds, gts, scans, index_list):
 #     return np.round(np.abs((true_area - pred_area) / true_area), 5)
 #
 #
-# def calculate_dice(pred_coords, gt_coords, image_shape):
-#     """
-#     Calculate DICE coefficient for two sets of coordinates.
-#
-#     Args:
-#     pred_coords (np.array): Predicted coordinates, shape (N, 2)
-#     gt_coords (np.array): Ground truth coordinates, shape (M, 2)
-#     image_shape (tuple): Shape of the original image (height, width)
-#
-#     Returns:
-#     float: DICE coefficient
-#     """
-#     # Create binary masks from coordinates
-#     pred_mask = np.zeros(image_shape, dtype=bool)
-#     gt_mask = np.zeros(image_shape, dtype=bool)
-#
-#     # Fill in the masks
-#     pred_mask[pred_coords[:, 0], pred_coords[:, 1]] = True
-#     gt_mask[gt_coords[:, 0], gt_coords[:, 1]] = True
-#
-#     # Calculate intersection and union
-#     intersection = np.logical_and(pred_mask, gt_mask)
-#     union = np.logical_or(pred_mask, gt_mask)
-#
-#     # Calculate DICE coefficient
-#     dice = (2. * intersection.sum() + 1e-8) / (pred_mask.sum() + gt_mask.sum() + 1e-8)
-#
-#     return dice
-#
-#
-# def calculate_iou(pred_coords, gt_coords, image_shape):
-#     """
-#     Calculate IoU (Intersection over Union) for two sets of coordinates.
-#
-#     Args:
-#     pred_coords (np.array): Predicted coordinates, shape (N, 2)
-#     gt_coords (np.array): Ground truth coordinates, shape (M, 2)
-#     image_shape (tuple): Shape of the original image (height, width)
-#
-#     Returns:
-#     float: IoU score
-#     """
-#     # Create binary masks from coordinates
-#     pred_mask = np.zeros(image_shape, dtype=bool)
-#     gt_mask = np.zeros(image_shape, dtype=bool)
-#
-#     # Fill in the masks
-#     pred_mask[pred_coords[:, 0], pred_coords[:, 1]] = True
-#     gt_mask[gt_coords[:, 0], gt_coords[:, 1]] = True
-#
-#     # Calculate intersection and union
-#     intersection = np.logical_and(pred_mask, gt_mask)
-#     union = np.logical_or(pred_mask, gt_mask)
-#
-#     # Calculate IoU
-#     iou = intersection.sum() / (union.sum() + 1e-8)
-#
-#     return iou
-#
-#
+def calculate_dice2(pred_coords, gt_coords, image_shape):
+    """
+    Calculate DICE coefficient for two sets of coordinates.
+
+    Args:
+    pred_coords (np.array): Predicted coordinates, shape (N, 2)
+    gt_coords (np.array): Ground truth coordinates, shape (M, 2)
+    image_shape (tuple): Shape of the original image (height, width)
+
+    Returns:
+    float: DICE coefficient
+    """
+    # Create binary masks from coordinates
+    pred_mask = np.zeros(image_shape, dtype=bool)
+    gt_mask = np.zeros(image_shape, dtype=bool)
+
+    # Fill in the masks
+    pred_mask[pred_coords[:, 0], pred_coords[:, 1]] = True
+    gt_mask[gt_coords[:, 0], gt_coords[:, 1]] = True
+
+    # Calculate intersection and union
+    intersection = np.logical_and(pred_mask, gt_mask)
+    union = np.logical_or(pred_mask, gt_mask)
+
+    # Calculate DICE coefficient
+    dice = (2. * intersection.sum() + 1e-8) / (pred_mask.sum() + gt_mask.sum() + 1e-8)
+
+    return dice
+
+
+def calculate_iou2(pred_coords, gt_coords, image_shape):
+    """
+    Calculate IoU (Intersection over Union) for two sets of coordinates.
+
+    Args:
+    pred_coords (np.array): Predicted coordinates, shape (N, 2)
+    gt_coords (np.array): Ground truth coordinates, shape (M, 2)
+    image_shape (tuple): Shape of the original image (height, width)
+
+    Returns:
+    float: IoU score
+    """
+    # Create binary masks from coordinates
+    pred_mask = np.zeros(image_shape, dtype=bool)
+    gt_mask = np.zeros(image_shape, dtype=bool)
+
+    # Fill in the masks
+    pred_mask[pred_coords[:, 0], pred_coords[:, 1]] = True
+    gt_mask[gt_coords[:, 0], gt_coords[:, 1]] = True
+
+    # Calculate intersection and union
+    intersection = np.logical_and(pred_mask, gt_mask)
+    union = np.logical_or(pred_mask, gt_mask)
+
+    # Calculate IoU
+    iou = intersection.sum() / (union.sum() + 1e-8)
+
+    return iou
+
+
 # def trace_dicecoef(edge_pred, edge_true, jaccard=False):
 #     '''Return the DICE similarity coefficient between the edge prediction and ground truth.
 #
