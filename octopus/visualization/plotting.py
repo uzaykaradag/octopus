@@ -52,7 +52,7 @@ def display_scan(scan, predictions, gt_elm=None, credible_intervals=None, figsiz
             plt.fill_between(np.arange(len(lower)), lower, upper, color=color, alpha=0.2)
 
     # Customize the plot
-    plt.legend(handles=legend_elements, loc='best', fontsize=10)
+    plt.legend(handles=legend_elements, loc='best', fontsize=15)
 
     # Remove ticks for a cleaner look
     plt.xticks([])
