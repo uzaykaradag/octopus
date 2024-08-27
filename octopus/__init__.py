@@ -1,6 +1,6 @@
 from . import core
 from . import preprocessing
-from . import visualization
+from . import visualisation
 from . import dataset
 
-__all__ = ['core', 'preprocessing', 'visualization', 'dataset']
+__all__ = ['core', 'preprocessing', 'visualisation', 'dataset']

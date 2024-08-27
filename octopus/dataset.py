@@ -3,9 +3,10 @@ import numpy as np
 from skimage import io, util
 
 # Hardcoded paths
-SCAN_DIRECTORY = '/Users/uzaykaradag/Developer/octopus/data/image'
-PRED_DIRECTORY = '/Users/uzaykaradag/Developer/octopus/data/pred'
-GT_DIRECTORY = '/Users/uzaykaradag/Developer/octopus/data/gt'
+BASE_PATH = '/Users/uzay/Developer/octopus/data'
+SCAN_DIRECTORY = f'{BASE_PATH}/scans'
+PRED_DIRECTORY = f'{BASE_PATH}/pred'
+GT_DIRECTORY = f'{BASE_PATH}/masks'
 
 
 def preprocess_scan(scan_path):
@@ -21,13 +22,13 @@ def extract_elm_coords(mask_path):
 
 
 def get_file_list():
-    if not os.path.exists(SCAN_DIRECTORY):
-        raise FileNotFoundError(f"Directory not found: {SCAN_DIRECTORY}")
+    if not os.path.exists(PRED_DIRECTORY):
+        raise FileNotFoundError(f"Directory not found: {PRED_DIRECTORY}")
 
-    files = [f for f in os.listdir(SCAN_DIRECTORY) if f.endswith(('.png'))]
+    files = [f for f in os.listdir(PRED_DIRECTORY) if f.endswith(('.png'))]
 
     if not files:
-        raise ValueError(f"No image files found in {SCAN_DIRECTORY}")
+        raise ValueError(f"No image files found in {PRED_DIRECTORY}")
 
     return files
 
@@ -43,15 +44,16 @@ def load_dataset():
         pred_mask_path = os.path.join(PRED_DIRECTORY, file)
         gt_mask_path = os.path.join(GT_DIRECTORY, file)
 
-        key = file.replace('.png', '')
+        if os.path.exists(scan_path) and os.path.exists(gt_mask_path):
+            key = file.replace('.png', '')
 
-        scan = preprocess_scan(scan_path)
-        scans[key] = scan
+            scan = preprocess_scan(scan_path)
+            scans[key] = scan
 
-        init_elm = extract_elm_coords(pred_mask_path)
-        inits[key] = init_elm
+            init_elm = extract_elm_coords(pred_mask_path)
+            inits[key] = init_elm
 
-        gt_elm = extract_elm_coords(gt_mask_path)
-        gts[key] = gt_elm
+            gt_elm = extract_elm_coords(gt_mask_path)
+            gts[key] = gt_elm
 
     return scans, inits, gts
