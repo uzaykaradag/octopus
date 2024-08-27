@@ -35,10 +35,6 @@ Refer to the demo.ipynb file for usage instructions.
 
 OCTOPUS demonstrates superior precision and boundary accuracy, particularly in none macular hole cases, surpassing conventional segmentation methods.
 
-## License
-
-MIT
-
 ## Contact
 
 uzaykaradag@outlook.com
